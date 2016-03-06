@@ -1,7 +1,6 @@
 package com.shutup.rssformp4bar.main.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,18 +49,21 @@ public class ListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
-        if (convertView != null){
+        if (convertView != null) {
             viewHolder = new ViewHolder(convertView);
-        }else{
+        } else {
             convertView = layoutInflater.inflate(R.layout.listview_item, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
         RSSItem rssItem = data.get(position);
         viewHolder.itemTitle.setText(rssItem.getTitle());
+        viewHolder.itemTitle.setSelected(true);
         viewHolder.itemContent.setText(rssItem.getContent());
+        viewHolder.pubDate.setText(rssItem.getPubDate().toString());
         return convertView;
     }
+
 
     static class ViewHolder {
         @Bind(R.id.item_img)
@@ -70,11 +72,11 @@ public class ListViewAdapter extends BaseAdapter {
         TextView itemTitle;
         @Bind(R.id.item_content)
         TextView itemContent;
+        @Bind(R.id.pubDate)
+        TextView pubDate;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
-
-
 }
