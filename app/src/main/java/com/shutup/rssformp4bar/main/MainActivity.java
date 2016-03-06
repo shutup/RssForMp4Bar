@@ -1,34 +1,35 @@
 package com.shutup.rssformp4bar.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shutup.rssformp4bar.BuildConfig;
 import com.shutup.rssformp4bar.R;
+import com.shutup.rssformp4bar.base.BaseActivity;
+import com.shutup.rssformp4bar.common.Constants;
 import com.shutup.rssformp4bar.common.RssUrl;
+import com.shutup.rssformp4bar.main.adapter.ListViewAdapter;
 
 import org.mcsoxford.rss.RSSFeed;
 import org.mcsoxford.rss.RSSItem;
 import org.mcsoxford.rss.RSSReader;
 import org.mcsoxford.rss.RSSReaderException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements Constants{
 
     @Bind(R.id.title)
     TextView title;
@@ -72,11 +73,15 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                RSSItem rssItem = data.get(position);
+                Intent intent = new Intent(MainActivity.this,ItemDetailActivity.class);
+                intent.putExtra(Constants.IntentIdentify,rssItem.getLink().toString());
+                startActivity(intent);
             }
         });
     }
 
+    //the handler callback
     class RssCallBack implements Handler.Callback {
 
         @Override

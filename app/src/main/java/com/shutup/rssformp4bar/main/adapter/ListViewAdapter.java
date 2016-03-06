@@ -1,4 +1,4 @@
-package com.shutup.rssformp4bar.main;
+package com.shutup.rssformp4bar.main.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
