@@ -28,7 +28,8 @@ public class ItemDetailActivity extends BaseActivity implements Constants{
         Intent intent = getIntent();
         if (intent != null){
             String itemUrl = intent.getStringExtra(Constants.IntentIdentify);
-            webView.loadUrl(itemUrl);
+//            webView.loadUrl(itemUrl);
+            webView.loadData(itemUrl,"text/html","utf-8");
         }
     }
 }

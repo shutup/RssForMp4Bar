@@ -15,15 +15,15 @@
         android:layout_height="match_parent"
         android:layout_gravity="center">
         <LinearLayout
+            xmlns:fresco="http://schemas.android.com/apk/res-auto"
             android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
-            <ImageView
-                android:src="@mipmap/ic_launcher"
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/item_img"
-                android:layout_width="100dp"
-                android:layout_height="150dp" />
+                android:layout_width="@dimen/item_image_width"
+                android:layout_height="@dimen/item_image_height" />
         </LinearLayout>
         <LinearLayout
             android:layout_weight="3"

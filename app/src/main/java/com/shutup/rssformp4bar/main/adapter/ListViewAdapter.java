@@ -1,13 +1,16 @@
 package com.shutup.rssformp4bar.main.adapter;
 
 import android.content.Context;
+import android.net.Uri;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.shutup.rssformp4bar.R;
 
 import org.mcsoxford.rss.RSSItem;
@@ -57,9 +60,11 @@ public class ListViewAdapter extends BaseAdapter {
             convertView.setTag(viewHolder);
         }
         RSSItem rssItem = data.get(position);
+        String rssItemDescription = rssItem.getDescription();
+        viewHolder.itemImg.setImageURI(parseImageUri(rssItemDescription));
         viewHolder.itemTitle.setText(rssItem.getTitle());
         viewHolder.itemTitle.setSelected(true);
-        viewHolder.itemContent.setText(rssItem.getContent());
+        viewHolder.itemContent.setText(getDescriptionString(rssItemDescription));
         viewHolder.pubDate.setText(rssItem.getPubDate().toString());
         return convertView;
     }
@@ -67,7 +72,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     static class ViewHolder {
         @Bind(R.id.item_img)
-        ImageView itemImg;
+        SimpleDraweeView itemImg;
         @Bind(R.id.item_title)
         TextView itemTitle;
         @Bind(R.id.item_content)
@@ -79,4 +84,30 @@ public class ListViewAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
+    //parse the description
+    private String getDescriptionString(String str) {
+        Spanned htmlSpanned = Html.fromHtml(str);
+        String htmlString = htmlSpanned.toString();
+        String htmlStringArray[] = htmlString.split("\n");
+        String description ="";
+        for (int index = 0; index < htmlStringArray.length; index++) {
+            String s = htmlStringArray[index];
+            if (s.contains("剧情")){
+                description = htmlStringArray[index+1];
+                break;
+            }else {
+                description = "暂无剧情简介！";
+            }
+        }
+        return description;
+    }
+    //parse the image Uri
+    private Uri parseImageUri(String imageUri) {
+        imageUri = imageUri.split("\n")[0];
+        int startIndex = imageUri.indexOf("src=\"");
+        int lastIndex = imageUri.indexOf("/>");
+        String result = imageUri.substring(startIndex + 5, lastIndex - 2);
+        return new Uri.Builder().path(result).build();
+    }
 }
+

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.shutup.rssformp4bar.BuildConfig;
 import com.shutup.rssformp4bar.R;
@@ -28,19 +29,23 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements Constants{
+public class MainActivity extends BaseActivity implements Constants {
 
     @Bind(R.id.listView)
     ListView listView;
+    @Bind(R.id.tv)
+    TextView tv;
     private List<RSSItem> data;
     HandlerThread rssThread = null;
     Handler rssHandler = null;
     Handler mainHandler = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         initEvents();
 
         rssHandler.post(new Runnable() {
@@ -58,9 +63,12 @@ public class MainActivity extends BaseActivity implements Constants{
         });
     }
 
+
+
+
     private void initEvents() {
         //contact to the main thread
-        mainHandler = new Handler(Looper.getMainLooper(),new RssCallBack());
+        mainHandler = new Handler(Looper.getMainLooper(), new RssCallBack());
         //get data in the rss thread in case stuck the main thread
         rssThread = new HandlerThread("rss");
         rssThread.start();
@@ -71,8 +79,9 @@ public class MainActivity extends BaseActivity implements Constants{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RSSItem rssItem = data.get(position);
-                Intent intent = new Intent(MainActivity.this,ItemDetailActivity.class);
-                intent.putExtra(Constants.IntentIdentify,rssItem.getLink().toString());
+                Intent intent = new Intent(MainActivity.this, ItemDetailActivity.class);
+//                intent.putExtra(Constants.IntentIdentify,rssItem.getLink().toString());
+                intent.putExtra(Constants.IntentIdentify, rssItem.getDescription());
                 startActivity(intent);
             }
         });
@@ -84,7 +93,7 @@ public class MainActivity extends BaseActivity implements Constants{
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.what == 1) {
-                ListViewAdapter adapter = new ListViewAdapter(MainActivity.this,data);
+                ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, data);
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 if (BuildConfig.DEBUG) Log.d("RssCallBack", "data changed");
