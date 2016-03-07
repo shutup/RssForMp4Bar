@@ -107,7 +107,7 @@ public class ListViewAdapter extends BaseAdapter {
         int startIndex = imageUri.indexOf("src=\"");
         int lastIndex = imageUri.indexOf("/>");
         String result = imageUri.substring(startIndex + 5, lastIndex - 2);
-        return new Uri.Builder().path(result).build();
+        return  Uri.parse(result);
     }
 }
 

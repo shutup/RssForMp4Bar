@@ -5,6 +5,7 @@ package com.shutup.rssformp4bar.common;
  */
 public class RssUrl {
     private String defaultRssUrl = "http://www.mp4ba.com/rss.php";
+//    private String defaultRssUrl = "http://www.mp48.com/rss.xml";
 
     public String getRssUrl() {
         if (rssUrl!=null && rssUrl.equalsIgnoreCase("")){
