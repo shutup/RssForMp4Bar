@@ -17,6 +17,9 @@ import com.shutup.rssformp4bar.R;
 
 import org.mcsoxford.rss.RSSItem;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -67,7 +70,7 @@ public class ListViewAdapter extends BaseAdapter {
         viewHolder.itemTitle.setText(rssItem.getTitle());
         viewHolder.itemTitle.setSelected(true);
         viewHolder.itemContent.setText(getDescriptionString(rssItemDescription));
-        viewHolder.pubDate.setText(rssItem.getPubDate().toString());
+        viewHolder.pubDate.setText(parsePubDate(rssItem.getPubDate()));
         return convertView;
     }
 
@@ -124,6 +127,11 @@ public class ListViewAdapter extends BaseAdapter {
             if (BuildConfig.DEBUG) Log.d("ListViewAdapter", imageUri);
         }
         return null;
+    }
+
+    private String parsePubDate(Date pubDate) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        return simpleDateFormat.format(pubDate);
     }
 }
 

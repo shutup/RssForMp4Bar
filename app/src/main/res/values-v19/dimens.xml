@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <!-- toolbar padding top-->
-    <dimen name="toolbar_padding_top">0dp</dimen>
+    <dimen name="toolbar_padding_top">25dp</dimen>
     <!-- listview item-->
     <dimen name="item_height">200dp</dimen>
     <dimen name="item_title_text_size">10sp</dimen>
