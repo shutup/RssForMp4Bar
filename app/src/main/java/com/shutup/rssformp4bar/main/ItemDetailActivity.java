@@ -33,4 +33,5 @@ public class ItemDetailActivity extends BaseActivity implements Constants{
             webView.loadUrl(itemUrl);
         }
     }
+
 }

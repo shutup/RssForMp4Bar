@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.shutup.rssformp4bar.BuildConfig;
 import com.shutup.rssformp4bar.R;
