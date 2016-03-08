@@ -5,14 +5,12 @@
     android:background="@android:color/darker_gray"
     android:orientation="vertical"
     >
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
     <ListView
+        android:scrollbars="none"
         android:layout_marginTop="@dimen/listview_margin"
         android:layout_marginLeft="@dimen/listview_margin"
         android:layout_marginRight="@dimen/listview_margin"
+        android:layout_marginBottom="@dimen/listview_margin"
         android:background="@android:color/transparent"
         android:divider="@null"
         android:dividerHeight="@dimen/listview_divider_height"

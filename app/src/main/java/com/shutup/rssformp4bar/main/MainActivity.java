@@ -33,8 +33,6 @@ public class MainActivity extends BaseActivity implements Constants {
 
     @Bind(R.id.listView)
     ListView listView;
-    @Bind(R.id.tv)
-    TextView tv;
     private List<RSSItem> data;
     HandlerThread rssThread = null;
     Handler rssHandler = null;
@@ -80,8 +78,8 @@ public class MainActivity extends BaseActivity implements Constants {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RSSItem rssItem = data.get(position);
                 Intent intent = new Intent(MainActivity.this, ItemDetailActivity.class);
-//                intent.putExtra(Constants.IntentIdentify,rssItem.getLink().toString());
-                intent.putExtra(Constants.IntentIdentify, rssItem.getDescription());
+                intent.putExtra(Constants.IntentIdentify,rssItem.getLink().toString());
+//                intent.putExtra(Constants.IntentIdentify, rssItem.getDescription());
                 startActivity(intent);
             }
         });
