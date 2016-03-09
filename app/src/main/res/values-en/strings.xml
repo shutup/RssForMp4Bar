@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MP4 BAR</string>
+    <string name="item_no_description">"No Descrpition!"</string>
+    <string name="listview_title">MP4 Bar RSS Reader</string>
+</resources>
