@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MP4吧 RSS</string>
-    <string name="listview_title">MP4吧 RSS阅读器</string>
     <string name="item_no_description">"暂无剧情简介！"</string>
+    <string name="listview_title">MP4吧 RSS阅读器</string>
 </resources>

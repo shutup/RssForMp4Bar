@@ -104,7 +104,7 @@ public class ListViewAdapter extends BaseAdapter {
                 }
                 break;
             }else {
-                description = "暂无剧情简介！";
+                description = this.context.getResources().getString(R.string.item_no_description);
             }
         }
         return description;
