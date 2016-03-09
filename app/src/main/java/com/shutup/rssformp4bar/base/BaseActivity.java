@@ -77,9 +77,10 @@ public class BaseActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            //去除title
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            //call this method to compat to actionbar,but if you use toolbar as a stand widget,no need to call this
+//            setSupportActionBar(toolbar);
+            //when you call the former method,use below to remove title
+//            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
 

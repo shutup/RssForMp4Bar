@@ -3,4 +3,5 @@
     <string name="app_name">MP4 BAR</string>
     <string name="item_no_description">"No Descrpition!"</string>
     <string name="listview_title">MP4 Bar RSS Reader</string>
+    <string name="menu_setting_title">Settings</string>
 </resources>

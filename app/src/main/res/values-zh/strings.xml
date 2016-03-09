@@ -3,4 +3,5 @@
     <string name="app_name">MP4吧</string>
     <string name="item_no_description">"暂无剧情简介！"</string>
     <string name="listview_title">MP4吧 RSS阅读器</string>
+    <string name="menu_setting_title">设置</string>
 </resources>

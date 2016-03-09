@@ -6,10 +6,13 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.shutup.rssformp4bar.BuildConfig;
 import com.shutup.rssformp4bar.R;
@@ -42,7 +45,7 @@ public class MainActivity extends BaseActivity implements Constants {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        processToolBar();
         initEvents();
 
         rssHandler.post(new Runnable() {
@@ -60,7 +63,21 @@ public class MainActivity extends BaseActivity implements Constants {
         });
     }
 
-
+    private void processToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_setting:
+                        Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
 
 
     private void initEvents() {
