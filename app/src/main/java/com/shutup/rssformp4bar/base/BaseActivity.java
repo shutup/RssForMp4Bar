@@ -79,7 +79,7 @@ public class BaseActivity extends AppCompatActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             //去除title
-            toolbar.setTitle("");
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
 
