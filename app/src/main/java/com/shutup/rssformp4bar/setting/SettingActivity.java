@@ -1,7 +1,6 @@
 package com.shutup.rssformp4bar.setting;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.shutup.rssformp4bar.R;
