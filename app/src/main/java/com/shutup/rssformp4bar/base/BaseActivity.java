@@ -3,32 +3,22 @@ package com.shutup.rssformp4bar.base;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.shutup.rssformp4bar.R;
 
 public class BaseActivity extends AppCompatActivity {
 
-    LinearLayout rootLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 这句很关键，注意是调用父类的方法
-        super.setContentView(R.layout.activity_base);
         //set the status bar color
         setStatusBarColor(R.color.CustomeStatusBarColor);
-        //init toolbar
-        initToolbar();
         // init fresco
         Fresco.initialize(BaseActivity.this);
     }
@@ -74,26 +64,4 @@ public class BaseActivity extends AppCompatActivity {
         tintManager.setStatusBarTintResource(color);//通知栏所需颜色
     }
 
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            //call this method to compat to actionbar,but if you use toolbar as a stand widget,no need to call this
-//            setSupportActionBar(toolbar);
-            //when you call the former method,use below to remove title
-//            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-    }
-
-    @Override
-    public void setContentView(int layoutId) {
-        setContentView(View.inflate(this, layoutId, null));
-    }
-
-    @Override
-    public void setContentView(View view) {
-        rootLayout = (LinearLayout) findViewById(R.id.root_layout);
-        if (rootLayout == null) return;
-        rootLayout.addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        initToolbar();
-    }
 }

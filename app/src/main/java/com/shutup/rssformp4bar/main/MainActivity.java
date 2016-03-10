@@ -20,11 +20,11 @@ import com.shutup.rssformp4bar.base.BaseActivity;
 import com.shutup.rssformp4bar.common.Constants;
 import com.shutup.rssformp4bar.common.RssUrl;
 import com.shutup.rssformp4bar.main.adapter.ListViewAdapter;
+import com.shutup.rssformp4bar.setting.SettingActivity;
 
 import org.mcsoxford.rss.RSSFeed;
 import org.mcsoxford.rss.RSSItem;
 import org.mcsoxford.rss.RSSReader;
-import org.mcsoxford.rss.RSSReaderException;
 
 import java.util.List;
 
@@ -35,6 +35,8 @@ public class MainActivity extends BaseActivity implements Constants {
 
     @Bind(R.id.listView)
     ListView listView;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     private List<RSSItem> data;
     HandlerThread rssThread = null;
     Handler rssHandler = null;
@@ -47,31 +49,16 @@ public class MainActivity extends BaseActivity implements Constants {
         ButterKnife.bind(this);
         processToolBar();
         initEvents();
-
-        rssHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                RSSReader rssReader = new RSSReader();
-                try {
-                    RSSFeed rssFeed = rssReader.load(new RssUrl().getRssUrl());
-                    data = rssFeed.getItems();
-                    mainHandler.sendEmptyMessage(1);
-                } catch (RSSReaderException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     private void processToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_setting:
-                        Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this, SettingActivity.class));
                         break;
                 }
                 return true;
@@ -81,6 +68,7 @@ public class MainActivity extends BaseActivity implements Constants {
 
 
     private void initEvents() {
+
         //contact to the main thread
         mainHandler = new Handler(Looper.getMainLooper(), new RssCallBack());
         //get data in the rss thread in case stuck the main thread
@@ -89,12 +77,26 @@ public class MainActivity extends BaseActivity implements Constants {
         //contact to the rss thread
         rssHandler = new Handler(rssThread.getLooper());
 
+        rssHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                RSSReader rssReader = new RSSReader();
+                try {
+                    RSSFeed rssFeed = rssReader.load(new RssUrl().getRssUrl());
+                    data = rssFeed.getItems();
+                    mainHandler.sendEmptyMessage(1);
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "e:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RSSItem rssItem = data.get(position);
                 Intent intent = new Intent(MainActivity.this, ItemDetailActivity.class);
-                intent.putExtra(Constants.IntentIdentify,rssItem.getLink().toString());
+                intent.putExtra(Constants.IntentIdentify, rssItem.getLink().toString());
 //                intent.putExtra(Constants.IntentIdentify, rssItem.getDescription());
                 startActivity(intent);
             }

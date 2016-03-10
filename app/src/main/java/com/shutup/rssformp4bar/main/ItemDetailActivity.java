@@ -13,10 +13,12 @@ import com.shutup.rssformp4bar.common.Constants;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ItemDetailActivity extends BaseActivity implements Constants{
+public class ItemDetailActivity extends BaseActivity implements Constants {
 
     @Bind(R.id.webView)
     WebView webView;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,6 @@ public class ItemDetailActivity extends BaseActivity implements Constants{
     }
 
     private void processToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.back);
         // App Logo
         toolbar.setLogo(R.mipmap.ic_launcher);
@@ -48,7 +49,7 @@ public class ItemDetailActivity extends BaseActivity implements Constants{
 
     private void processExtra() {
         Intent intent = getIntent();
-        if (intent != null){
+        if (intent != null) {
             String itemUrl = intent.getStringExtra(Constants.IntentIdentify);
             webView.getSettings().setUseWideViewPort(true);
             webView.getSettings().setLoadWithOverviewMode(true);

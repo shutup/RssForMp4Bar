@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".main.ItemDetailActivity" />
-        <activity android:name=".base.BaseActivity"></activity>
+        <activity android:name=".base.BaseActivity" />
+        <activity android:name=".setting.SettingActivity"/>
     </application>
 
 </manifest>

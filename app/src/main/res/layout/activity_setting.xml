@@ -3,15 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.shutup.rssformp4bar.main.ItemDetailActivity">
+    tools:context="com.shutup.rssformp4bar.setting.SettingActivity">
 
     <include layout="@layout/toolbar_layout"/>
-    <WebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    </WebView>
 </LinearLayout>
