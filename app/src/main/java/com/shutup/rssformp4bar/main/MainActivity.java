@@ -20,11 +20,19 @@ import com.shutup.rssformp4bar.base.BaseActivity;
 import com.shutup.rssformp4bar.common.Constants;
 import com.shutup.rssformp4bar.common.RssUrl;
 import com.shutup.rssformp4bar.main.adapter.ListViewAdapter;
+import com.shutup.rssformp4bar.main.adapter.ListViewAdapter4Mp4Bar;
+import com.shutup.rssformp4bar.main.adapter.ListViewAdapter4SinaNews;
+import com.shutup.rssformp4bar.rss_custom.RSSConfig;
+import com.shutup.rssformp4bar.rss_custom.RSSHandler4SinaNews;
+import com.shutup.rssformp4bar.rss_custom.RSSParser;
+import com.shutup.rssformp4bar.rss_custom.RSSParserCustom;
 import com.shutup.rssformp4bar.setting.SettingActivity;
 
-import org.mcsoxford.rss.RSSFeed;
-import org.mcsoxford.rss.RSSItem;
-import org.mcsoxford.rss.RSSReader;
+import com.shutup.rssformp4bar.rss_custom.RSSFeed;
+import com.shutup.rssformp4bar.rss_custom.RSSItem;
+import com.shutup.rssformp4bar.rss_custom.RSSReader;
+
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.util.List;
 
@@ -80,11 +88,11 @@ public class MainActivity extends BaseActivity implements Constants {
         rssHandler.post(new Runnable() {
             @Override
             public void run() {
-                RSSReader rssReader = new RSSReader();
+                RSSReader rssReader = new RSSReader(new DefaultHttpClient(), new RSSParserCustom(new RSSHandler4SinaNews(new RSSConfig())));
                 try {
                     RSSFeed rssFeed = rssReader.load(new RssUrl().getRssUrl());
                     data = rssFeed.getItems();
-                    mainHandler.sendEmptyMessage(1);
+                    mainHandler.sendEmptyMessage(2);
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "e:" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -109,10 +117,15 @@ public class MainActivity extends BaseActivity implements Constants {
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.what == 1) {
-                ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, data);
+                ListViewAdapter adapter = new ListViewAdapter4Mp4Bar(MainActivity.this, data);
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                if (BuildConfig.DEBUG) Log.d("RssCallBack", "data changed");
+                if (BuildConfig.DEBUG) Log.d("RssCallBack", "ListViewAdapter4Mp4Bar data changed");
+            }else if (msg.what == 2) {
+                ListViewAdapter adapter = new ListViewAdapter4SinaNews(MainActivity.this, data);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                if (BuildConfig.DEBUG) Log.d("RssCallBack", "ListViewAdapter4SinaNews data changed");
             }
             return true;
         }
