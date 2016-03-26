@@ -23,6 +23,7 @@ import com.shutup.rssformp4bar.main.adapter.ListViewAdapter;
 import com.shutup.rssformp4bar.main.adapter.ListViewAdapter4Mp4Bar;
 import com.shutup.rssformp4bar.main.adapter.ListViewAdapter4SinaNews;
 import com.shutup.rssformp4bar.rss_custom.RSSConfig;
+import com.shutup.rssformp4bar.rss_custom.RSSHandler4Mp4Bar;
 import com.shutup.rssformp4bar.rss_custom.RSSHandler4SinaNews;
 import com.shutup.rssformp4bar.rss_custom.RSSParser;
 import com.shutup.rssformp4bar.rss_custom.RSSParserCustom;
@@ -34,7 +35,9 @@ import com.shutup.rssformp4bar.rss_custom.RSSReader;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,6 +52,8 @@ public class MainActivity extends BaseActivity implements Constants {
     HandlerThread rssThread = null;
     Handler rssHandler = null;
     Handler mainHandler = null;
+    Map<Integer,ListViewAdapter> adapterMap = null;
+    private int currenttype = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +61,15 @@ public class MainActivity extends BaseActivity implements Constants {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         processToolBar();
+        initListAdapter();
         initEvents();
+    }
+
+    private void initListAdapter() {
+        adapterMap = new HashMap<>();
+        adapterMap.put(Rss4Mp4Bar,new ListViewAdapter4Mp4Bar(this,data));
+        adapterMap.put(Rss4SinaNews,new ListViewAdapter4SinaNews(this,data));
+
     }
 
     private void processToolBar() {
@@ -66,7 +79,14 @@ public class MainActivity extends BaseActivity implements Constants {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_setting:
-                        startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                        rssHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                fetchRssItems(Rss4Mp4Bar);
+                            }
+                        });
+
+//                        startActivity(new Intent(MainActivity.this, SettingActivity.class));
                         break;
                 }
                 return true;
@@ -88,14 +108,7 @@ public class MainActivity extends BaseActivity implements Constants {
         rssHandler.post(new Runnable() {
             @Override
             public void run() {
-                RSSReader rssReader = new RSSReader(new DefaultHttpClient(), new RSSParserCustom(new RSSHandler4SinaNews(new RSSConfig())));
-                try {
-                    RSSFeed rssFeed = rssReader.load(new RssUrl().getRssUrl());
-                    data = rssFeed.getItems();
-                    mainHandler.sendEmptyMessage(2);
-                } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "e:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                fetchRssItems(Rss4SinaNews);
             }
         });
 
@@ -104,8 +117,7 @@ public class MainActivity extends BaseActivity implements Constants {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RSSItem rssItem = data.get(position);
                 Intent intent = new Intent(MainActivity.this, ItemDetailActivity.class);
-                intent.putExtra(Constants.IntentIdentify, rssItem.getLink().toString());
-//                intent.putExtra(Constants.IntentIdentify, rssItem.getDescription());
+                intent.putExtra(Constants.IntentIdentify, adapterMap.get(currenttype).getLink(rssItem));
                 startActivity(intent);
             }
         });
@@ -116,18 +128,35 @@ public class MainActivity extends BaseActivity implements Constants {
 
         @Override
         public boolean handleMessage(Message msg) {
-            if (msg.what == 1) {
+            if (msg.what == Rss4Mp4Bar) {
                 ListViewAdapter adapter = new ListViewAdapter4Mp4Bar(MainActivity.this, data);
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 if (BuildConfig.DEBUG) Log.d("RssCallBack", "ListViewAdapter4Mp4Bar data changed");
-            }else if (msg.what == 2) {
+            }else if (msg.what == Rss4SinaNews) {
                 ListViewAdapter adapter = new ListViewAdapter4SinaNews(MainActivity.this, data);
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 if (BuildConfig.DEBUG) Log.d("RssCallBack", "ListViewAdapter4SinaNews data changed");
             }
             return true;
+        }
+    }
+
+    private void fetchRssItems(int type){
+        currenttype = type;
+        RSSReader rssReader = null;
+        if (type == Rss4Mp4Bar){
+            rssReader = new RSSReader(new DefaultHttpClient(), new RSSParserCustom(new RSSHandler4Mp4Bar(new RSSConfig())));
+        }else if (type == Rss4SinaNews){
+            rssReader = new RSSReader(new DefaultHttpClient(), new RSSParserCustom(new RSSHandler4SinaNews(new RSSConfig())));
+        }
+        try {
+            RSSFeed rssFeed = rssReader.load(new RssUrl().getRssUrl(type));
+            data = rssFeed.getItems();
+            mainHandler.sendEmptyMessage(type);
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, "e:" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

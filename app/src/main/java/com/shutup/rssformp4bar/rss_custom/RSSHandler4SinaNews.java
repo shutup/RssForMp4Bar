@@ -29,7 +29,6 @@ public class RSSHandler4SinaNews extends RSSHandler {
 
             @Override
             public void set(String pubDate) {
-                if (BuildConfig.DEBUG) Log.d("RSSHandler4SinaNews", pubDate);
                 final java.util.Date date = parseDate(pubDate);
                 if (item == null) {
                     feed.setPubDate(date);

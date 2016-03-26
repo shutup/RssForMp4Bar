@@ -5,4 +5,8 @@ package com.shutup.rssformp4bar.common;
  */
 public interface Constants {
     public static String IntentIdentify = "RssItem";
+
+    int Rss4Mp4Bar = 1;
+    int Rss4SinaNews = 2;
+
 }

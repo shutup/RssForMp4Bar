@@ -10,7 +10,7 @@ public class RSSHandler4Mp4Bar extends RSSHandler {
      *
      * @param config configuration for the initial capacities of collections
      */
-    RSSHandler4Mp4Bar(RSSConfig config) {
+    public RSSHandler4Mp4Bar(RSSConfig config) {
         super(config);
     }
 }

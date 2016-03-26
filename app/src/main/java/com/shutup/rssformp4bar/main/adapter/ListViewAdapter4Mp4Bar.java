@@ -1,6 +1,7 @@
 package com.shutup.rssformp4bar.main.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Html;
 import android.text.Spanned;
@@ -19,11 +20,9 @@ import java.util.List;
  */
 public class ListViewAdapter4Mp4Bar extends ListViewAdapter {
 
-    private Context context;
 
     public ListViewAdapter4Mp4Bar(Context context, List<RSSItem> data) {
         super(context, data);
-        this.context = context;
     }
 
     @Override
@@ -44,8 +43,18 @@ public class ListViewAdapter4Mp4Bar extends ListViewAdapter {
     }
 
     @Override
+    public Drawable getImageDrawable() {
+        return null;
+    }
+
+    @Override
     public String getPubDate(RSSItem rssItem ) {
         return parsePubDate(rssItem.getPubDate());
+    }
+
+    @Override
+    public String getLink(RSSItem rssItem) {
+        return rssItem.getLink().toString();
     }
 
     //parse the description

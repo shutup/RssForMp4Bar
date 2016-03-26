@@ -34,9 +34,9 @@ import butterknife.ButterKnife;
 /**
  * Created by shutup on 16/3/6.
  */
-public class ListViewAdapter extends BaseAdapter implements ListViewAdapterDataFormat{
+public  abstract class ListViewAdapter extends BaseAdapter implements ListViewAdapterDataFormat{
     private List<RSSItem> data;
-    private Context context;
+    protected Context context;
     private LayoutInflater layoutInflater;
 
     public ListViewAdapter(Context context, List<RSSItem> data) {
@@ -72,37 +72,17 @@ public class ListViewAdapter extends BaseAdapter implements ListViewAdapterDataF
         }
         RSSItem rssItem = data.get(position);
 
-        viewHolder.itemImg.setImageURI(getImgUrl(rssItem));
-        VectorDrawableCompat vectorDrawableCompat = VectorDrawableCompat.create(context.getResources(), R.drawable.icon_sina, context.getTheme());
-        viewHolder.itemImg.setImageDrawable(vectorDrawableCompat);
+        if (getImgUrl(rssItem) != null ){
+            viewHolder.itemImg.setImageURI(getImgUrl(rssItem));
+        }else {
+            viewHolder.itemImg.setImageDrawable(getImageDrawable());
+        }
         viewHolder.itemTitle.setText(getTitle(rssItem));
         viewHolder.itemTitle.setSelected(true);
         viewHolder.itemContent.setText(getDescription(rssItem));
         viewHolder.pubDate.setText(getPubDate(rssItem));
         return convertView;
     }
-
-    @Override
-    public String getTitle(RSSItem rssItem) {
-        return rssItem.getTitle();
-    }
-
-    @Override
-    public String getDescription(RSSItem rssItem) {
-        return rssItem.getDescription();
-    }
-
-    @Override
-    public String getPubDate(RSSItem rssItem) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        return simpleDateFormat.format(rssItem.getPubDate());
-    }
-
-    @Override
-    public Uri getImgUrl(RSSItem rssItem) {
-        return null;
-    }
-
 
     static class ViewHolder {
         @Bind(R.id.item_img)
